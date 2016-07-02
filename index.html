@@ -1,12 +1,42 @@
 <!doctype html>
 <html>
   <head>
-    <title>Phaser-test</title>
+    <meta charset="utf-8" />
+    <title>Asteroids</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
+    <!-- vendor js -->
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="http://cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+    <!-- game js -->
+    <script src="js/Boot.js"></script>
+	  <script src="js/Preloader.js"></script>
+	  <script src="js/MainMenu.js"></script>
+	  <script src="js/Game.js"></script>
+    <script src="js/Asteroids.js"></script>
+
+    <script type="text/javascript">
+      window.onload = function() {
+      	var game = new Phaser.Game("100%", "100%", Phaser.AUTO, '');
+
+      	game.state.add('Boot', BasicGame.Boot);
+      	game.state.add('Preloader', BasicGame.Preloader);
+      	//game.state.add('MainMenu', BasicGame.MainMenu);
+      	game.state.add('Game', BasicGame.Game);
+        game.state.add('Asteroids', BasicGame.Asteroids);
+
+      	game.state.start('Boot');
+      };
+    </script>
+
+    <!--
     <script>
     var socket = io();
     var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-game', { preload: preload, create: create, update: update});
@@ -59,5 +89,6 @@
     });
 
     </script>
+  -->
   </body>
 </html>
