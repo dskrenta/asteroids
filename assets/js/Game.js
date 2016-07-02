@@ -19,9 +19,6 @@ BasicGame.Game = function (game) {
     this.physics;	//	the physics manager
     this.rnd;		//	the repeatable random number generator
 
-    //this.player;
-    //this.cursors;
-
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
@@ -32,6 +29,8 @@ BasicGame.Game.prototype = {
 	create: function () {
 
 		//	Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
+    this.renderer.clearBeforeRender = false;
+    this.renderer.roundPixels = true;
 
 	},
 
