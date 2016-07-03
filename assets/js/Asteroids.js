@@ -19,6 +19,7 @@ BasicGame.Asteroids.prototype = {
 
     this.player = this.add.sprite(this.world.centerX, this.world.centerY, 'player');
     this.player.anchor.set(0.5);
+    this.player.scale.setTo(1.5, 1.5);
 
     //this.physics.p2.enable(this.player);
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
@@ -35,8 +36,8 @@ BasicGame.Asteroids.prototype = {
     // asteroids sprite group
     this.asteroids = this.add.group();
 
-    for (var i = 0; i < 500; i++) {
-        this.asteroids.create(1 + Math.random() * 5000, 1 + Math.random() * 5000, 'asteroid3');
+    for (var i = 0; i < 800; i++) {
+        this.asteroids.create(this.world.randomX, this.world.randomY, 'asteroid3');
         this.asteroids.scale.setTo(2, 2);
     }
 
