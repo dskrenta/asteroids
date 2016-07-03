@@ -36,6 +36,10 @@ BasicGame.Preloader.prototype = {
 			//this.load.image('player', 'sprites/hotdog.png');
 			this.load.image('player', 'sprites/ship.png');
 
+			this.load.image('asteroid1', 'sprites/asteroid1.png');
+			this.load.image('asteroid2', 'sprites/asteroid2.png');
+			this.load.image('asteroid3', 'sprites/asteroid3.png');
+
 	},
 
 	create: function () {
