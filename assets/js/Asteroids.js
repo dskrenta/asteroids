@@ -3,6 +3,8 @@ BasicGame.Asteroids = function(game) {
   this.player;
   this.bg;
   this.asteroids;
+  this.fireButton;
+  this.weapon;
 }
 
 BasicGame.Asteroids.prototype = {
@@ -26,8 +28,9 @@ BasicGame.Asteroids.prototype = {
     this.player.body.collideWorldBounds = true;
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
-    this.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 1, 1);
+    this.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
     // asteroids sprite group
     this.asteroids = this.add.group();
@@ -36,6 +39,25 @@ BasicGame.Asteroids.prototype = {
         this.asteroids.create(1 + Math.random() * 5000, 1 + Math.random() * 5000, 'asteroid3');
         this.asteroids.scale.setTo(2, 2);
     }
+
+    // weapon stuff
+
+    this.weapon = this.add.weapon(30, 'bullet');
+
+    //  The bullet will be automatically killed when it leaves the world bounds
+    this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+
+    //  The speed at which the bullet is fired
+    this.weapon.bulletSpeed = 600;
+
+    //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
+    this.weapon.fireRate = 100;
+
+    //  Tell the Weapon to track the 'player' Sprite
+    //  With no offsets from the position
+    //  But the 'true' argument tells the weapon to track sprite rotation
+    this.weapon.trackSprite(this.player, 0, 0, true);
+
 	},
 	update: function () {
     if (this.cursors.up.isDown) {
@@ -53,6 +75,10 @@ BasicGame.Asteroids.prototype = {
     }
     else {
         this.player.body.angularVelocity = 0;
+    }
+
+    if (this.fireButton.isDown) {
+      this.weapon.fire();
     }
 	}
 };
