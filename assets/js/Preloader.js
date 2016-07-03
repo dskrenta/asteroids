@@ -41,6 +41,9 @@ BasicGame.Preloader.prototype = {
 			this.load.image('asteroid3', 'sprites/asteroid3.png');
 
 			this.load.image('bullet', 'sprites/shmup-bullet.png');
+			this.load.image('x-wing', 'sprites/x-wing.png');
+			this.load.image('falcon', 'sprites/falcon.png');
+			this.load.image('planetexpress', 'sprites/planetexpress.png');
 
 	},
 
