@@ -9,15 +9,13 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-/*
 io.on('connection', function(socket) {
-  socket.emit('welcome', {message: 'Welcome!', id: socket.id});
-  socket.on('position update', function(position) {
-    console.log(`socket-id: ${position.id}, x-position: ${position.x}, y-position: ${position.y}`);
-    socket.broadcast.emit('global position update', position);
+  socket.emit('socketId', {id: socket.id});
+  socket.on('position', function(position) {
+    console.log(`socketId: ${position.id}, xPosition: ${position.x}, yPosition: ${position.y}`);
+    socket.broadcast.emit('position update', position);
   });
 });
-*/
 
 http.listen(3000, function(){
   console.log('listening on *:3000');

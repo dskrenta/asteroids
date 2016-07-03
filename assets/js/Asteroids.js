@@ -5,6 +5,13 @@ BasicGame.Asteroids = function(game) {
   this.asteroids;
   this.fireButton;
   this.weapon;
+
+  this.socket = io();
+  this.socketId;
+
+  this.socket.on('socketId', function(data) {
+    this.socketId = data.id;
+  });
 }
 
 BasicGame.Asteroids.prototype = {
@@ -82,24 +89,33 @@ BasicGame.Asteroids.prototype = {
 
     if (this.cursors.up.isDown) {
         this.physics.arcade.accelerationFromRotation(this.player.rotation, 200, this.player.body.acceleration);
+        this.socket.emit('position', {socketId: this.socketId, x: this.player.x, y: this.player.y});
     }
     else {
         this.player.body.acceleration.set(0);
+        //this.socket.emit('position', {socketId: this.socketId, x: this.player.x, y: this.player.y});
     }
 
     if (this.cursors.left.isDown) {
         this.player.body.angularVelocity = -200;
+        this.socket.emit('position', {socketId: this.socketId, x: this.player.x, y: this.player.y});
     }
     else if (this.cursors.right.isDown) {
         this.player.body.angularVelocity = 200;
+        this.socket.emit('position', {socketId: this.socketId, x: this.player.x, y: this.player.y});
     }
     else {
         this.player.body.angularVelocity = 0;
+        //this.socket.emit('position', {socketId: this.socketId, x: this.player.x, y: this.player.y});
     }
 
     if (this.fireButton.isDown) {
       this.weapon.fire();
     }
+
+    this.socket.on('position', function(position) {
+      console.log(JSON.stringify(position));
+    });
 	},
   processHandler: function (weapon, asteroid) {
     return true;
