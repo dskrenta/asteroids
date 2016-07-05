@@ -24,15 +24,23 @@ BasicGame.Asteroids.prototype = {
     //this.physics.p2.enable(this.player);
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
 
+    this.player.enableBody = true;
+
     this.player.body.drag.set(70);
     this.player.body.maxVelocity.set(200);
     this.player.body.collideWorldBounds = true;
+    this.player.body.bounce.set(1);
+
+    // sprite collisions
+    //this.player.body.checkCollision.up = true;
+    //this.player.body.checkCollision.down = true;
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
     this.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
 
+    /*
     // asteroids sprite group
     this.asteroids = this.add.group();
     this.asteroids.enableBody = true;
@@ -45,14 +53,17 @@ BasicGame.Asteroids.prototype = {
       asteroid.body.collideWorldBounds = true;
       asteroid.body.bounce.setTo(0.8, 0.8);
       asteroid.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
-      /*
-      this.asteroids.create(this.world.randomX, this.world.randomY, 'asteroid3');
-      this.asteroids.scale.setTo(2, 2);
-      this.asteroids.body.collideWorldBounds = true;
-      this.asteroids.body.bounce.setTo(0.8, 0.8);
-      this.asteroids.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
-      */
+      this.physics.enable(asteroid, Phaser.Physics.ARCADE);
+      this.physics.arcade.collide(asteroid, this.player, this.collisionHandler, null, this);
+      //this.asteroids.create(this.world.randomX, this.world.randomY, 'asteroid3');
+      //this.asteroids.scale.setTo(2, 2);
+      //this.asteroids.body.collideWorldBounds = true;
+      //this.asteroids.body.bounce.setTo(0.8, 0.8);
+      //this.asteroids.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
     }
+    */
+
+    this.asteroids();
 
     // weapon stuff
 
@@ -75,10 +86,7 @@ BasicGame.Asteroids.prototype = {
 	},
 	update: function () {
     // collisions
-    if (this.physics.arcade.collide(this.weapon, this.asteroids, this.collisionHandler, this.processHandler, this))
-    {
-        console.log('boom');
-    }
+    this.physics.arcade.overlap(this.player, this.asteroids, this.collisionHandler, null, this);
 
     if (this.cursors.up.isDown) {
         this.physics.arcade.accelerationFromRotation(this.player.rotation, 200, this.player.body.acceleration);
@@ -101,10 +109,30 @@ BasicGame.Asteroids.prototype = {
       this.weapon.fire();
     }
 	},
-  processHandler: function (weapon, asteroid) {
-    return true;
-  },
   collisionHandler: function(weapon, asteroid) {
-    weapon.kill();
+    console.log('collision occured');
+  },
+  asteroids: function() {
+    this.asteroids = this.add.physicsGroup();
+    this.asteroids.enableBody = true;
+
+    for(var i = 0; i < 100; i++) {
+      var x = this.rnd.between(0, 5000);
+      var y = this.rnd.between(0, 5000);
+      var scale = this.rnd.between(1, 4);
+      var randomAngularVelocity = this.rnd.between(-30, 30);
+      var spriteImg = `asteroid${this.rnd.between(1, 3)}`;
+
+      var asteroid = this.asteroids.create(x, y, spriteImg);
+      asteroid.name = `asteroid${i}`;
+      asteroid.scale.setTo(scale, scale);
+      asteroid.body.collideWorldBounds = true;
+      asteroid.body.bounce.setTo(0.8, 0.8);
+      asteroid.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
+      asteroid.body.angularVelocity = randomAngularVelocity;
+      asteroid.body.mass = 100;
+
+      this.physics.arcade.enable(asteroid);
+    }
   }
 };
