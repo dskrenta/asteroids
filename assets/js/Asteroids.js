@@ -29,7 +29,8 @@ BasicGame.Asteroids.prototype = {
     this.player.body.drag.set(70);
     this.player.body.maxVelocity.set(200);
     this.player.body.collideWorldBounds = true;
-    this.player.body.bounce.set(1);
+    this.player.body.bounce.set(0.8);
+    this.player.body.mass = 100;
 
     // sprite collisions
     //this.player.body.checkCollision.up = true;
@@ -87,6 +88,7 @@ BasicGame.Asteroids.prototype = {
 	update: function () {
     // collisions
     this.physics.arcade.overlap(this.player, this.asteroids, this.collisionHandler, null, this);
+    this.physics.arcade.collide(this.player, this.asteroids);
 
     if (this.cursors.up.isDown) {
         this.physics.arcade.accelerationFromRotation(this.player.rotation, 200, this.player.body.acceleration);
@@ -110,7 +112,9 @@ BasicGame.Asteroids.prototype = {
     }
 	},
   collisionHandler: function(weapon, asteroid) {
-    console.log('collision occured');
+    //console.log('collision occured');
+    //this.player.kill();
+    console.log('player dead');
   },
   asteroids: function() {
     this.asteroids = this.add.physicsGroup();
@@ -125,12 +129,14 @@ BasicGame.Asteroids.prototype = {
 
       var asteroid = this.asteroids.create(x, y, spriteImg);
       asteroid.name = `asteroid${i}`;
-      asteroid.scale.setTo(scale, scale);
+      //asteroid.scale.setTo(scale, scale);
       asteroid.body.collideWorldBounds = true;
       asteroid.body.bounce.setTo(0.8, 0.8);
       asteroid.body.velocity.setTo(10 + Math.random() * 40, 10 + Math.random() * 40);
-      asteroid.body.angularVelocity = randomAngularVelocity;
-      asteroid.body.mass = 100;
+      //asteroid.body.angularVelocity = randomAngularVelocity;
+      asteroid.body.maxVelocity = 100;
+      asteroid.body.mass = 200;
+      asteroid.body.setSize(20, 20);
 
       this.physics.arcade.enable(asteroid);
     }
